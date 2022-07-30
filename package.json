@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "tailwind": "tailwind build -i src/tailwind.css -o public/style.css",
+    "build": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
     "start": "nodemon ./src/app.js --exec babel-node -e js"
   },
   "keywords": [],
@@ -15,6 +17,7 @@
     "cloudinary": "^1.29.0",
     "cors": "^2.8.5",
     "express": "^4.17.3",
+    "express-handlebars": "^6.0.6",
     "express-jwt": "^6.1.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.6",
@@ -29,5 +32,8 @@
     "url": "https://github.com/hieu2343edc/Assignment-Nodejs/issues"
   },
   "homepage": "https://github.com/hieu2343edc/Assignment-Nodejs#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "tailwindcss": "^3.1.6"
+  }
 }
