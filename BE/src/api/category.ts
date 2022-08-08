@@ -1,4 +1,4 @@
-import instance from "./config;
+import instance from "./config";
 
 export const getcate = () => {
   return instance.get("/category");

@@ -14,8 +14,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api", routerProduct);
+app.use("/api", routerAuth);
 app.use("/api", routerCategory);
+app.use("/api", routerProduct);
+
 // connect db
 
 mongoose.connect("mongodb://localhost:27017/nodejs", () => {
