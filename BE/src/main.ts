@@ -1,15 +1,13 @@
 import "./style.css";
-import typescriptLogo from "./typescript.svg";
 import Navigo from "navigo";
-import HomePage from "./pages/Home";
-import AddProductPage from "./pages/Admin/Product/add";
-
-import AdminPage from "./pages/Admin";
-import EditProductPage from "./pages/Admin/Product/editproduct";
-import detailProduct from "./pages/Home/detail";
-import signin from "./pages/auth/signin";
-import signup from "./pages/auth/signup";
-import Cart from "./pages/Home/cart";
+import HomePage from "./Page/home";
+import AddProductPage from "./Page/Admin/Product/add";
+import AdminPage from "./Page/Admin";
+import EditProductPage from "./Page/Admin/Product/editproduct";
+import detailProduct from "./Page/home/detail";
+import signin from "./Page/auth/signin";
+import signup from "./Page/auth/signup";
+import Cart from "./Page/home/cart";
 
 const router = new Navigo("/", { linksSelector: "a" });
 
