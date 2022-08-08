@@ -1,5 +1,5 @@
 import Product from "../model/product";
-import instance from "./instance";
+import instance from "./config";
 
 export const List = () => {
   return instance.get("/products");
