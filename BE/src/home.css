@@ -1,0 +1,29 @@
+label.error {
+    color: red;
+    border: red;
+}
+
+textarea.error,
+input.error,
+select.error {
+    border: 1px solid red;
+}
+
+.menu-header li {
+    display: flex;
+    display: inline-block;
+    align-items: center;
+    color: #fff;
+    padding: 0 15px;
+    justify-content: center;
+}
+
+.menu-navber li {
+    margin-bottom: 8px;
+}
+
+img,
+video {
+    max-width: none;
+    height: none;
+}
