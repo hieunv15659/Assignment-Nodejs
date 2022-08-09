@@ -1,16 +1,13 @@
+import axios from "axios";
 import footer from "../../components/Footer";
 import UserHeader from "../../components/Header/User";
 import Phone from "../../components/Phone";
 import phone2 from "../../components/phone2";
 import HomeSidebar from "../../components/Sidebar/home";
-import Product from "../../model/product";
 
 const HomePage = {
   render: async () => {
-    const res = await List();
-    const data: Product[] = res.data;
-    console.log(data);
-
+    const { data } = await axios.get("http://localhost:8080/api/products");
     return /*html*/ `
             ${UserHeader.render()} 
             <div class="mt-4 flex pt-6 " >
@@ -27,7 +24,7 @@ const HomePage = {
             <div class=" grid grid-cols-4 gap-4 mt-4 mb-4 px-20 pt-6">
                    
                 ${data
-                  .map((iphone) => {
+                  .map((iphone: any) => {
                     return /*html*/ `  
                     <a href="/product/${iphone._id}">
                     <div>

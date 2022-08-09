@@ -1,17 +1,12 @@
+import axios from "axios";
 import footer from "../../components/Footer";
 import UserHeader from "../../components/Header/User";
 
 const detailProduct = {
-  render: async (id: Number) => {
-    const list = await getAll(id);
-    const data: Product = list.data;
-
-    const listdata: Category = await catebyId(id);
-    const listcate = listdata.data;
-
-    const itemProd: Product = list.data;
-    const idbyProd = itemProd.category;
-
+  render: async (id: any) => {
+    const { data } = await axios.get(
+      `http://localhost:8080/api/products/${id}`
+    );
     return /*html*/ `        
            ${UserHeader.render()}
            <div class="md:place-items-center">   
@@ -22,11 +17,7 @@ const detailProduct = {
                        <li>
                            <a href="/" class="text-gray-900 dark:text-white hover:underline " aria-current="page">Trang Chủ</a>
                        </li> <div class="mt-2"><img src="../icon/muiten.png"></div>
-                       <li>
-                           <a href="#" class="text-gray-900 dark:text-white hover:underline ">${
-                             listcate.name
-                           }</a>
-                       </li> <div class="mt-2"><img src="../icon/muiten.png"></div>
+   
                        <li>
                            <a href="#" class="text-gray-900 dark:text-white hover:underline">${
                              data.name
