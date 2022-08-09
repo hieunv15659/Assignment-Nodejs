@@ -10,7 +10,6 @@ const EditProductPage = {
     const listcate: Category = await getcate();
     const data: Categorys = await listca();
     const list = data.data;
-    console.log(catebyId);
 
     const getProd = await Read(id);
 

@@ -30,7 +30,7 @@ const HomePage = {
                 ${data
                   .map((iphone) => {
                     return /*html*/ `  
-                    <a href="/product/${iphone.id}">
+                    <a href="/product/${iphone._id}">
                     <div>
                         <div class="flex justify-center"><img class="max-h-[200px]  " src="${iphone.image}"></div>
                          

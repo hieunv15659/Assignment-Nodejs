@@ -27,7 +27,7 @@ const productSchema = mongoose.Schema({
         type: String,
     },
     id: {
-        type: Number,
+        type: mongoose.ObjectId,
     }
 });
 

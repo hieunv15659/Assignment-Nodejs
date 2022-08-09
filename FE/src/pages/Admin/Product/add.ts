@@ -78,8 +78,6 @@ const AddProductPage = {
                     <textarea id="longDesc" class="w-full border rounded-md px-2 h-20"></textarea>
                     <div class="text-red-500" id="erLong"></div>
                   </div>
-        
-        
                   <button class=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded-full" type="submit"
                     id="btnAdd">Thêm mới sản phâm</button>
                 </div>
@@ -140,12 +138,10 @@ const AddProductPage = {
         shortDesc != "" &&
         feature != ""
       ) {
-        console.log("1");
-
         const product: Product = {
-          image: imageUrl,
           name: name,
           originalPrice: price,
+          image: imageUrl,
           saleOffPrice: sale,
           longDesc: longDesc,
           shortDesc: shortDesc,
