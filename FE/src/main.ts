@@ -40,7 +40,7 @@ router.on({
     print(AddProductPage);
   },
   "/admin/product/edit/:id": (data: any) => {
-    const id = +data.data.id;
+    const id = data.data.id;
     console.log(id);
     print(EditProductPage, id);
   },

@@ -1,15 +1,16 @@
-import { List } from "../../api/product";
-import { getcate } from "../../api/category";
 import AdminHeader from "../../components/Header/Admin";
 import Sidebar from "../../components/Sidebar";
-import Product from "../../model/product";
 
+import axios from "axios";
 const AdminPage = {
   render: async () => {
-    const res = await List();
-    const data: Product[] = res.data;
-    const listcate: Category = await getcate();
+    const { data } = await axios.get("http://localhost:8080/api/category");
+    const { data: product } = await axios.get(
+      `http://localhost:8080/api/products`
+    );
     console.log(data);
+    console.log(product);
+
     return /* html */ `
         ${AdminHeader.render()}
         <!-- Container -->
@@ -29,11 +30,17 @@ const AdminPage = {
                     <div class="filter-cate">
                     <label for="category" class="font-bold w-[100%] px-8">Danh muc san pham</label><br>
                     <select class="w-[300px] border rounded-sm h-10" name="category" id="category">
-                        ${listcate.data.map(
-                          (item) => `
-                        <option value="${item.id}">${item.name}</option>
-                        `
-                        )}
+                    ${data
+                      .map(
+                        (categoryProduct: any) => /* html */ `
+                    <option ${
+                      categoryProduct._id == product.category ? "selected" : ""
+                    } value="${categoryProduct._id}">${
+                          categoryProduct.name
+                        }</option>
+                `
+                      )
+                      .join("")}
                     </select>
                     </div>
                 </div>
@@ -50,17 +57,16 @@ const AdminPage = {
                     <tr>
                     <th class="w-[5%] border">#</th>
                     <th class="w-[20%] border ">Tên sản phẩm</th>
-                    <th class="w-[10%] border">Gía</th>
-                    <th class="w-[15%] border">Ảnh</th>
+                    <th class="w-[10%] border">Ảnh</th>
+                    <th class="w-[15%] border">Gía</th>
                     <th class="w-[30%] border">Mô tả</th>
-                    <th class="w-[10%] border text-center">Ẩn/hiện</th>
-                    <th class="w-[10%] border">Thao tác</th>
+                    <th colspan="2" class ="w-[30%] border">Action</th>
                     </tr>
                 </thead>
                     <tbody>
-                    ${data
+                    ${product
                       .map(
-                        (item, index) => /* html */ `
+                        (item: any, index: any) => /* html */ `
                         <tr class="border-t-2 hover:bg-orange-100 text-center">
                             <td class="text-center p-3 px-5">${index + 1}</td>
                             <td class="text-center p-3 px-5">${item.name}</td>
@@ -72,18 +78,13 @@ const AdminPage = {
                               item.feature
                             }</td>
                             <td class="text-center p-3 px-5">
-                                <label for="default-toggle ${
-                                  item.id
-                                }" class="inline-flex relative items-center cursor-pointer">
-                                    <input type="checkbox" value="" id="default-toggle ${
-                                      item.id
-                                    }" class="sr-only peer">
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                                </label>
+                            <button class="btn btn-danger btn-remove" data-id=${
+                              item._id
+                            }>Remove</button> <br>
                             </td>
                             <td class="text-center p-3 px-5">
                                 <a href="/admin/product/edit/${
-                                  item.id
+                                  item._id
                                 }" class="" >
                                     <svg class="mx-auto"  width="30" height="30" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M19.4548 3.41575C19.647 3.70687 19.615 4.10248 19.3587 4.35876L10.1663 13.5511C10.0721 13.6454 9.95445 13.7128 9.82552 13.7465L5.99709 14.7465C5.87223 14.7791 5.74352 14.7784 5.62259 14.7476C5.49402 14.7149 5.37425 14.6482 5.27723 14.5511C5.08896 14.3629 5.01462 14.0889 5.08191 13.8313L6.08191 10.0028C6.11138 9.89003 6.16667 9.77861 6.24316 9.69121L15.4696 0.46967C15.5504 0.388906 15.6477 0.32846 15.7535 0.291631C15.832 0.264324 15.9152 0.25 15.9999 0.25C16.1989 0.25 16.3896 0.329017 16.5303 0.46967L19.3587 3.2981C19.3953 3.33471 19.4273 3.37416 19.4548 3.41575ZM17.7677 3.82843L15.9999 2.06066L7.48178 10.5788L6.85679 12.9716L9.24955 12.3466L17.7677 3.82843Z" fill="black"/>
@@ -102,6 +103,27 @@ const AdminPage = {
             </div>
         </div>
         `;
+  },
+  afterRender() {
+    const btns = document.querySelectorAll(".btn-remove");
+    btns.forEach((btn: any) => {
+      const id = btn.dataset.id;
+      console.log(id);
+
+      btn.addEventListener("click", async () => {
+        if (btn.classList.contains("btn-remove")) {
+          const confirm = window.confirm("Bạn có chắc muốn xóa không ?");
+          if (confirm) {
+            try {
+              await axios.delete(`http://localhost:8080/api/products/${id}`);
+              location.href = "/admin";
+            } catch (error) {
+              errorShow(error);
+            }
+          }
+        }
+      });
+    });
   },
 };
 

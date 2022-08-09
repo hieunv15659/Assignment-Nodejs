@@ -1,4 +1,3 @@
-import { List } from "../../api/product";
 import footer from "../../components/Footer";
 import UserHeader from "../../components/Header/User";
 import Phone from "../../components/Phone";
@@ -16,7 +15,7 @@ const HomePage = {
             ${UserHeader.render()} 
             <div class="mt-4 flex pt-6 " >
                 <div class="w-[300px] flex-none">
-                ${HomeSidebar.render()}
+                ${await HomeSidebar.render()}
                 </div>
          
                 <div class=" flex flex-wrap justify-center pt-6 w-[1500px] ">

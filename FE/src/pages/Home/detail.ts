@@ -1,5 +1,3 @@
-import { catebyId } from "../../api/category";
-import { getAll } from "../../api/product";
 import footer from "../../components/Footer";
 import UserHeader from "../../components/Header/User";
 
