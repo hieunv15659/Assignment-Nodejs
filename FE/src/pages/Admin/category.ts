@@ -17,7 +17,7 @@ const categoryAdmin = {
     );
 
     console.log(cate);
-    console.log(product);
+    console.log(response);
 
     return /* html */ `
         ${AdminHeader.render()}

@@ -10,8 +10,7 @@ const HomeSidebar = {
               ${data
                 .map(
                   (item: any) => /* html */ `
-              <li><a href="/category/${item._id}"><i class="fa-solid fa-mobile-button mr-[12px]"></i> ${item.name} </a></li>
-      
+              <li><a href="/category/${item._id}"><i class="fa-solid fa-mobile-button mx-8  "></i> ${item.name} </a></li>
           `
                 )
                 .join("")}
