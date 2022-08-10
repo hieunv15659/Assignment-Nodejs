@@ -2,14 +2,22 @@ import AdminHeader from "../../components/Header/Admin";
 import Sidebar from "../../components/Sidebar";
 
 import axios from "axios";
-const AdminPage = {
-  render: async (_id: any) => {
-    const { data } = await axios.get("http://localhost:8080/api/category");
+const categoryAdmin = {
+  render: async (id: any) => {
+    const { data } = await axios.get(
+      `http://localhost:8080/api/category/${id}`
+    );
+    const { data: cate } = await axios.get(
+      `http://localhost:8080/api/category`
+    );
+    const response = data.products;
+    console.log(response);
     const { data: product } = await axios.get(
       `http://localhost:8080/api/products`
     );
 
-    console.log(data);
+    console.log(cate);
+    console.log(product);
 
     return /* html */ `
         ${AdminHeader.render()}
@@ -29,10 +37,10 @@ const AdminPage = {
                 <h1 class="font-bold w-[100%] px-8">Bộ Lọc: </h1>
                     <div class="filter-cate">
                     <label for="category" class="font-bold w-[100%] px-8">Danh muc san pham</label><br>
-                    <a href=" admin/category/${data._id}"> 
+                    <a href="#"> 
                     <select class="w-[300px] border rounded-sm h-10" name="category" id="category">
  
-                    ${data
+                    ${cate
                       .map(
                         (categoryProduct: any) => /* html */ `
                     <option ${
@@ -67,7 +75,7 @@ const AdminPage = {
                     </tr>
                 </thead>
                     <tbody>
-                    ${product
+                    ${response
                       .map(
                         (item: any, index: any) => /* html */ `
                         <tr class="border-t-2 hover:bg-orange-100 text-center">
@@ -130,4 +138,4 @@ const AdminPage = {
   },
 };
 
-export default AdminPage;
+export default categoryAdmin;

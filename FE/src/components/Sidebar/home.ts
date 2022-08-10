@@ -16,7 +16,6 @@ const HomeSidebar = {
                 )
                 .join("")}
               </ul>
- 
           </div>
       `;
   },
