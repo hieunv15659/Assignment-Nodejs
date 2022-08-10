@@ -5,11 +5,14 @@ import HomePage from "./pages/Home";
 import AddProductPage from "./pages/Admin/Product/add";
 
 import AdminPage from "./pages/Admin";
-import EditProductPage from "./pages/Admin/Product/editproduct";
+
 import detailProduct from "./pages/Home/detail";
 import signin from "./pages/auth/signin";
 import signup from "./pages/auth/signup";
 import Cart from "./pages/Home/cart";
+import categoryPage from "./pages/Home/category";
+import categoryAdmin from "./pages/Admin/category";
+import EditProductPage from "./pages/Admin/Product/editproduct";
 
 const router = new Navigo("/", { linksSelector: "a" });
 
@@ -40,14 +43,24 @@ router.on({
     print(AddProductPage);
   },
   "/admin/product/edit/:id": (data: any) => {
-    const id = +data.data.id;
+    const id = data.data.id;
     console.log(id);
     print(EditProductPage, id);
+  },
+  "admin/category/:id": (params: any) => {
+    const id = params.data.id;
+    console.log(id);
+    print(categoryAdmin, id);
   },
   "/product/:id": (params: any) => {
     const id = params.data.id;
     console.log(id);
     print(detailProduct, id);
+  },
+  "/category/:id": (params: any) => {
+    const id = params.data.id;
+    console.log(id);
+    print(categoryPage, id);
   },
   "/Cart": () => {
     print(Cart);

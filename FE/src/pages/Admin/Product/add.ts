@@ -1,13 +1,15 @@
-import { getcate } from "../../../api/category";
+import axios from "axios";
 import { UploadFile } from "../../../api/image";
-import { AddProduct } from "../../../api/product";
+
 import AdminHeader from "../../../components/Header/Admin";
 import Sidebar from "../../../components/Sidebar";
 import Product from "../../../model/product";
 
 const AddProductPage = {
   render: async () => {
-    const listcate: Category = await getcate();
+    const { data } = await axios.get("http://localhost:8080/api/category");
+    console.log(data);
+
     return /*html*/ `
         ${AdminHeader.render()}
         <div class="flex divide-x h-screen">
@@ -60,11 +62,13 @@ const AddProductPage = {
                   <div class="flex flex-col ">
                     <label for="">Danh mục:</label>
                     <select name="" id="category" class="w-full border rounded-md px-2 h-10">
-                      ${listcate.data.map(
-                        (item) => `
-                      <option value="${item.id}">${item.name}</option>
-                      `
-                      )}
+                    ${data
+                      .map(
+                        (categoryProduct: any) => /* html */ `
+                                        <option value="${categoryProduct._id}">${categoryProduct.name}</option>
+                                    `
+                      )
+                      .join("")}
                     </select>
                   </div> <br>
                   <div class="">
@@ -78,8 +82,6 @@ const AddProductPage = {
                     <textarea id="longDesc" class="w-full border rounded-md px-2 h-20"></textarea>
                     <div class="text-red-500" id="erLong"></div>
                   </div>
-        
-        
                   <button class=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded-full" type="submit"
                     id="btnAdd">Thêm mới sản phâm</button>
                 </div>
@@ -140,19 +142,20 @@ const AddProductPage = {
         shortDesc != "" &&
         feature != ""
       ) {
-        console.log("1");
-
         const product: Product = {
-          image: imageUrl,
           name: name,
           originalPrice: price,
+          image: imageUrl,
           saleOffPrice: sale,
           longDesc: longDesc,
           shortDesc: shortDesc,
           feature: feature,
           category: category,
         };
-        const data = await AddProduct(product);
+        const data = await axios.post(
+          "http://localhost:8080/api/products",
+          product
+        );
         if (data) {
           alert("Thêm thành công");
         }

@@ -26,9 +26,7 @@ const productSchema = mongoose.Schema({
     shortDesc: {
         type: String,
     },
-    id: {
-        type: Number,
-    }
+
 });
 
 export default mongoose.model('Product', productSchema)

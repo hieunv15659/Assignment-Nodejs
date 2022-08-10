@@ -1,21 +1,16 @@
-import { getcate, catebyId, listca } from "../../../api/category";
 import { UploadFile } from "../../../api/image";
-import { Read, Update } from "../../../api/product";
+import axios from "axios";
 import AdminHeader from "../../../components/Header/Admin";
 import Sidebar from "../../../components/Sidebar";
 import Product from "../../../model/product";
 
 const EditProductPage = {
-  render: async (id: Number) => {
-    const listcate: Category = await getcate();
-    const data: Categorys = await listca();
-    const list = data.data;
-    console.log(catebyId);
-
-    const getProd = await Read(id);
-
-    const itemProd: Product = getProd.data;
-    const idbyProd = itemProd.category;
+  render: async (_id: any) => {
+    const { data } = await axios.get("http://localhost:8080/api/category");
+    const { data: product } = await axios.get(
+      `http://localhost:8080/api/products/${_id}`
+    );
+    console.log(product);
 
     return /*html*/ `
         ${AdminHeader.render()}
@@ -31,7 +26,7 @@ const EditProductPage = {
             <div class="flex flex-col justify-center items-center h-[350px] rounded border-b-2 border-b-gray-200">
               <div>
                 <img src="${
-                  itemProd.image
+                  product.image
                 }" class="h-[300px] mb-2" id="imgPreview" />
               </div>
               <div class="text-red-500" id="erImg"></div>
@@ -43,7 +38,7 @@ const EditProductPage = {
             <div class="">
               <label for="" class="mx-2">Mô tả ngắn</label>
               <textarea id="shortDesc" class="w-full p-2">${
-                itemProd.shortDesc
+                product.shortDesc
               }</textarea>
               <div class="text-red-500" id="erShort"></div>
             </div>
@@ -53,7 +48,7 @@ const EditProductPage = {
             <div class="flex flex-col mt-4 ">
               <label for="">Tên sản phẩm:</label>
               <input id="name" type="text" placeholder="Tên sản phẩm" value="${
-                itemProd.name
+                product.name
               }" class="w-full border rounded-md px-2 h-10"> 
               <div class="text-red-500" id="erName"></div>
             </div>
@@ -62,7 +57,7 @@ const EditProductPage = {
             <div class="flex flex-col ">
               <label for="">Giá gốc:</label>
               <input id="originalPrice" type="text" placeholder="Giá gốc" value="${
-                itemProd.originalPrice
+                product.originalPrice
               }"
                 class="w-full border rounded-md px-2 h-10">
               <div class="text-red-500" id="erPrice"></div>
@@ -71,7 +66,7 @@ const EditProductPage = {
             <div class="flex flex-col ">
               <label for="">Giá khuyến mãi:</label>
               <input id="saleOffPrice" type="text" placeholder="Giá khuyến mãi " value="${
-                itemProd.saleOffPrice
+                product.saleOffPrice
               }"
                 class="w-full border rounded-md px-2 h-10">
             </div>
@@ -79,19 +74,24 @@ const EditProductPage = {
           </div>
           <div class="flex flex-col ">
             <label for="">Danh mục:</label>
-            <select name="" id="category" class="w-full border rounded-md px-2 h-10">
-            <option value="${itemProd.category}">${list.name}</option>
-              ${listcate.data.map(
-                (item: any) => `
-              <option value="${item.id}">${item.name}</option>
-              `
-              )}
-            </select>
+            <select class="form-control" id="categoryName">
+            ${data
+              .map(
+                (categoryProduct: any) => /* html */ `
+                <option ${
+                  categoryProduct._id == product.category ? "selected" : ""
+                } value="${categoryProduct._id}">${
+                  categoryProduct.name
+                }</option>
+            `
+              )
+              .join("")}
+        </select>
           </div> <br>
           <div class="">
             <label for="">Đặc điểm nổi bật:</label>
             <textarea id="feature" class="w-full border rounded-md px-2 h-20">${
-              itemProd.feature
+              product.feature
             }</textarea>
             <div class="text-red-500" id="erFeature"></div>
           </div> <br>
@@ -99,7 +99,7 @@ const EditProductPage = {
           <div class="">
             <label for="">Mô tả dài:</label>
             <textarea id="longDesc" class="w-full border rounded-md px-2 h-20">${
-              itemProd.longDesc
+              product.longDesc
             }</textarea>
             <div class="text-red-500" id="erLong"></div>
           </div>
@@ -111,7 +111,7 @@ const EditProductPage = {
   </div>
         `;
   },
-  afterRender: async (id) => {
+  afterRender: async (_id: any) => {
     const formAdd = document.querySelector("#btnAdd");
     const imgPost = document.querySelector("#img-post");
     const imgPreview = document.querySelector("#imgPreview");
@@ -172,9 +172,11 @@ const EditProductPage = {
           shortDesc: shortDesc,
           feature: feature,
           category: category,
-          id: id,
         };
-        const data = await Update(product);
+        const data = await axios.patch(
+          `http://localhost:8080/api/products/${_id}`,
+          product
+        );
         if (data) {
           alert("Sửa thành công");
         }
